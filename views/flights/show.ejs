@@ -1,17 +1,23 @@
+<% 
+   let usedAirports = [];
+   if (flight.airport) usedAirports.push(flight.airport);
+   flight.destinations.forEach(dest => { 
+       if (dest.airport) usedAirports.push(dest.airport); 
+   });
+%>
+<div class="container">
 <form action="/flights/<%= flight._id %>/destinations" method="post">
     <select name="airport">
-        <option value="AUS">AUS</option>
-        <option value="DFW">DFW</option>
-        <option value="DEN">DEN</option>
-        <option value="LAX">LAX</option>
-        <option value="SAN">SAN</option>
+        <% if (!usedAirports.includes("AUS")) { %><option value="AUS">AUS</option><% } %>
+        <% if (!usedAirports.includes("DFW")) { %><option value="DFW">DFW</option><% } %>
+        <% if (!usedAirports.includes("DEN")) { %><option value="DEN">DEN</option><% } %>
+        <% if (!usedAirports.includes("LAX")) { %><option value="LAX">LAX</option><% } %>
+        <% if (!usedAirports.includes("SAN")) { %><option value="SAN">SAN</option><% } %>
     </select>
     <input type="datetime-local" name="arrival">
     <button type="submit">Add Destination</button>
 </form>
-
-
-<ul>
+<ul class="destination-list">
     <% flight.destinations.forEach(dest => { %>
         <li>
             Airport: <%= dest.airport %> | Arrival: <%= dest.arrival.toLocaleString() %>
@@ -20,11 +26,16 @@
 </ul>
 
 <h2>Tickets</h2>
-<ul>
+<ul class="ticket-list">
   <% tickets.forEach(ticket => { %>
     <li>
       Seat: <%= ticket.seat %> | Price: $<%= ticket.price %>
     </li>
+    <form action="/tickets/<%= ticket._id %>?_method=DELETE" method="POST">
+        <button type="submit">Delete Ticket</button>
+    </form>
+    <a href="/flights">Back to Homepage</a>
   <% }); %>
 </ul>
+</div>
 <a href="/flights/<%= flight._id %>/tickets/new">New Ticket</a>

@@ -1,13 +1,15 @@
 <%- include('../partials/header') %>
 
 <% flights.forEach(flight => { %>
-    <div>
+    <div class="flight-item" style="<%= flight.departs < currentDate ? 'color: red;' : '' %>">
         <p>Airline: <%= flight.airline %></p>
         <p>Airport: <%= flight.airport %></p>
         <p>Flight No.: <%= flight.flightNo %></p>
         <p>Departs: <%= flight.departs.toLocaleString() %></p>
         <a href="/flights/<%= flight._id %>">View Details</a>
+        <form action="/flights/<%= flight._id %>?_method=DELETE" method="POST">
+            <button class="delete-btn" type="submit">Delete Flight</button>
+        </form>
     </div>
 <% }); %>
-
 <%- include('../partials/footer') %>
