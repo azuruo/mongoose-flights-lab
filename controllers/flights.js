@@ -1,27 +1,32 @@
 const Flight = require('../models/flights');
 
-function index(req, res) {
-  Flight.find({}, function(err, flights) {
-    res.render('flights/index', { flights });
-  });
-}
-
-function newFlight(req, res) {
-  res.render('flights/new');
-}
-
-
-function create(req, res) {
-  const flight = new Flight(req.body);
-  flight.save(function(err) {
-    if (err) return res.render('flights/new');
-    res.redirect('/flights');
-  });
-}
-
 module.exports = {
   index,
   new: newFlight,
   create
 };
 
+async function index(req, res) {
+  try {
+      const flights = await Flight.find({});
+      res.render('flights/index', { flights, title: 'Flights' });
+  } catch (err) {
+      console.error('Error fetching flights:', err);
+      res.redirect('/');
+  }
+}
+
+function newFlight(req, res) {
+  res.render('flights/new');
+}
+
+async function create(req, res) {
+  try {
+      const flight = new Flight(req.body);
+      await flight.save();
+      res.redirect('/flights');
+  } catch (err) {
+      console.error('Error saving flight:', err);
+      res.render('flights/new');
+  }
+}
