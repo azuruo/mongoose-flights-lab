@@ -1,0 +1,20 @@
+<form action="/flights/<%= flight._id %>/destinations" method="post">
+    <select name="airport">
+        <option value="AUS">AUS</option>
+        <option value="DFW">DFW</option>
+        <option value="DEN">DEN</option>
+        <option value="LAX">LAX</option>
+        <option value="SAN">SAN</option>
+    </select>
+    <input type="datetime-local" name="arrival">
+    <button type="submit">Add Destination</button>
+</form>
+
+
+<ul>
+    <% flight.destinations.forEach(dest => { %>
+        <li>
+            Airport: <%= dest.airport %> | Arrival: <%= dest.arrival.toLocaleString() %>
+        </li>
+    <% }); %>
+</ul>

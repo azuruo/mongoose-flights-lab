@@ -6,6 +6,7 @@
         <p>Airport: <%= flight.airport %></p>
         <p>Flight No.: <%= flight.flightNo %></p>
         <p>Departs: <%= flight.departs.toLocaleString() %></p>
+        <a href="/flights/<%= flight._id %>">View Details</a>
     </div>
 <% }); %>
 
